@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome for dotnet build & ng build",
+      "url": "http://localhost:4200",
+      "runtimeArgs": [
+        "--user-data-dir",
+        "--remote-debugging-port=9222",
+        "--disable-session-crashed-bubble"
+      ],
+      "sourceMaps": true,
+      "trace": true,
+      "webRoot": "${workspaceRoot}/dist/",
+      "userDataDir": "${workspaceRoot}/.vscode/chrome"
+    }
+  ]
+}

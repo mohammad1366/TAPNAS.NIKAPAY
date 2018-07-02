@@ -1,4 +1,3 @@
-import { SmartTableComponent } from './card-manage/smart-table/smart-table.component';
 import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
@@ -34,7 +33,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'ریز تراکنش',
-        link: '/pages/charts/echarts',
+        link: '/pages/transactionReport/transaction-table',
       },
       {
         title: 'کارکرد دستگاه',

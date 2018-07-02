@@ -14,7 +14,10 @@ const routes: Routes = [{
   },  {
     path: 'card-manage',
     loadChildren: './card-manage/tables.module#TablesModule',
-  },{
+  }, {
+    path: 'transactionReport',
+    loadChildren: './transactionReport/transaction.module#TablesModule',
+  }, {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',

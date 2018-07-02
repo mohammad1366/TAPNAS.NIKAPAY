@@ -1,9 +1,16 @@
+import { Observable } from 'rxjs';
+import { cardService } from './../../../services/card/card.service';
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
-import { SmartTableService1 } from './../../../@core/data/smart-table1.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import * as moment from 'jalali-moment';
+import { ModalComponent } from './../modal/modal.component';
+
+import { DomSanitizer } from '@angular/platform-browser';
+
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
   selector: 'ngx-smart-table',
@@ -18,21 +25,18 @@ import * as moment from 'jalali-moment';
 
 export class SmartTableComponent {
 
-  types = [{id:null,name:'انتخاب کنید'},{id:1,name:'آبی'}, {id:2,name:'نقره ای'}, {id:3,name:'طلایی'}, {id:4,name:'پلاتینیوم'}];
-
-  dateObject = moment();
 
   settings = {
     actions: {
       columnTitle:'عملیات',
-      add:false
     },
     editable:false,
+    mode:'external',
+    noDataMessage:"اطلاعاتی برای نمایش نیست",
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
-
     },
     edit: {
       editButtonContent: '<i class="nb-edit"></i>',
@@ -44,33 +48,36 @@ export class SmartTableComponent {
       confirmDelete: true,
     },
     columns: {
-      id: {
-        title: 'ردیف',
+      Card16DigitNumber: {
+        title: 'شماره کارت',
         type: 'number',
         editable:false,
       },
-      name: {
-        title: 'نام مشتری',
-        type: 'string',
-        editable:false,
-      },
-      serialCard: {
-        title: 'سریال کارت',
-        type: 'number',
-        editable:false,
-      },
-      endDate: {
+      PersianExpierDate: {
         title: 'تاریخ انقضا',
         type: 'string',
         editable:false,
       },
-      active: {
-        title: 'وضعیت',
+      IsActive: {
+        title: 'فعال',
+        type: 'html',
+        valuePrepareFunction: (value) => {
+          if(value){return this._sanitizer.bypassSecurityTrustHtml(this.inputTrue);}
+          else{return this._sanitizer.bypassSecurityTrustHtml(this.inputTrue); } },
+        filter: false
+      },
+      CardTypeTitle: {
+        title: 'نوع کارت',
         type: 'boolean',
         editable:false,
       },
-      comment: {
-        title: 'توضیحات',
+      PersianCreateOn: {
+        title: 'زمان ثبت',
+        type: 'string',
+        editable:false,
+      },
+      LastBalanceTitle: {
+        title: 'مانده',
         type: 'string',
         editable:false,
       },
@@ -79,9 +86,27 @@ export class SmartTableComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private service: SmartTableService1) {
-    const data = this.service.getData();
-    this.source.load(data);
+
+  constructor(private service: cardService, private modalService: NgbModal
+   , private _sanitizer: DomSanitizer ) {
+  }
+
+  public inputTrue: string =  '<div class="custom-control custom-checkbox">'+
+                              '<input type="checkbox" class="custom-control-input" id="b-checkbox" disabled checked>'+
+                              '<label class="custom-control-label" for="b-checkbox"></label>'+
+                              '</div>';
+
+  public inputFalse: string = '<div class="custom-control custom-checkbox">'+
+                              '<input type="checkbox" class="custom-control-input" id="b-checkbox" disabled>'+
+                              '<label class="custom-control-label" for="b-checkbox"></label>'+
+                              '</div>';
+
+  ngOnInit() {
+    this.service.GetData().subscribe(
+      data => this.source.load(data),
+      error => {window.alert('مشکل در دریافت اطلاعات');  console.log(error);}
+    );
+
   }
 
   onDeleteConfirm(event): void {
@@ -91,4 +116,59 @@ export class SmartTableComponent {
       event.confirm.reject();
     }
   }
+
+  openCreateDialog(event): void {
+    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.modalHeader = 'کارت جدید';
+  }
+
+
+  openEditDialog(event): void {
+    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
+
+    activeModal.componentInstance.modalHeader = 'کارت';
+  }
+
+  config: ToasterConfig;
+
+  position = 'toast-top-right';
+  animationType = 'fade';
+  title = 'HI there!';
+  timeout = 5000;
+  toastsLimit = 5;
+  type = 'default';
+
+  isNewestOnTop = true;
+  isHideOnClick = true;
+  isDuplicatesPrevented = false;
+  isCloseButton = true;
+
+  types: string[] = ['default', 'info', 'success', 'warning', 'error'];
+  animations: string[] = ['fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'];
+  positions: string[] = ['toast-top-full-width', 'toast-bottom-full-width', 'toast-top-left', 'toast-top-center',
+    'toast-top-right', 'toast-bottom-right', 'toast-bottom-center', 'toast-bottom-left', 'toast-center'];
+
+
+  // private showToast(type: string, title: string, body: string) {
+  //   this.config = new ToasterConfig({
+  //     positionClass: this.position,
+  //     timeout: this.timeout,
+  //     newestOnTop: this.isNewestOnTop,
+  //     tapToDismiss: this.isHideOnClick,
+  //     preventDuplicates: this.isDuplicatesPrevented,
+  //     animation: this.animationType,
+  //     limit: this.toastsLimit,
+  //   });
+  //   const toast: Toast = {
+  //     type: type,
+  //     title: title,
+  //     body: body,
+  //     timeout: this.timeout,
+  //     showCloseButton: this.isCloseButton,
+  //     bodyOutputType: BodyOutputType.TrustedHtml,
+  //   };
+  //   this.toasterService.popAsync(toast);
+  // }
+
 }

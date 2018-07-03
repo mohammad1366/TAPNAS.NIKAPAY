@@ -1,0 +1,11 @@
+<nb-card>
+  <nb-card-header>
+    مدیریت مشترکین
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (delete)="onDeleteConfirm($event)" (edit)="openEditDialog($event)" (create)="openCreateDialog($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+

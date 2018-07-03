@@ -15,6 +15,12 @@ const routes: Routes = [{
     path: 'card-manage',
     loadChildren: './card-manage/tables.module#TablesModule',
   }, {
+    path: 'device-manage',
+    loadChildren: './device-manage/device.module#TablesModule',
+  },{
+    path: 'customer-manage',
+    loadChildren: './customer-manage/customer.module#TablesModule',
+  },{
     path: 'transactionReport',
     loadChildren: './transactionReport/transaction.module#TablesModule',
   }, {

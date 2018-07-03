@@ -10,7 +10,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'مدیریت مشترکین',
     icon: 'nb-person',
-    link: '/pages/ui-features',
+    link: '/pages/customer-manage/smart-table',
   },
   {
     title: 'مدیریت کارت ها',
@@ -20,7 +20,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'مدیریت دستگاه ها',
     icon: 'nb-audio',
-    link: '/pages/ui-features',
+    link: '/pages/device-manage/smart-table',
   },
   {
     title: 'مدیریت پذیرندگان',

@@ -6,11 +6,14 @@ import { Observable } from 'rxjs/Observable';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-    'Access-Control-Allow-Origin':'true',
-    'Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT, DELETE',
-    'Access-Control-Allow-Headers':'Authorization',
-
+    'Content-Type':  'application/json; charset=utf-8',
+    'Access-Control-Allow-Origin':'*',
+    'Access-Control-Allow-Methods':'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers':'Content-Type',
+    'Cache-Control':'no-cache',
+    'Expires':'-1',
+    'Pragma' :'no-cache',
+    'Server':'Microsoft-IIS/10.0',
   })
 };
 
@@ -23,11 +26,12 @@ export class cardService {
   constructor(private http:HttpClient) { }
 
   GetData(){
-    return this.http.get<any[]>("http://eibay.ir:8085/Api/card/getlist");
+    console.log(this.http.get<any[]>("http://eibay.ir:8085/Api/card/getlist"));
+      return this.http.get<any[]>("http://eibay.ir:8085/Api/card/getlist");
   }
 
   SaveData(card: Card){
-    console.log(card);
-    return this.http.post("http://eibay.ir:8085/Api/card/add", card, httpOptions);
+    console.log(this.http.post("http://eibay.ir:8085/Api/card/add", (card), httpOptions));
+    return this.http.post("http://eibay.ir:8085/Api/card/add", (card), httpOptions);
   }
 }

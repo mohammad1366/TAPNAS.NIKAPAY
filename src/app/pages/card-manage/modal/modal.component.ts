@@ -58,7 +58,7 @@ import * as moment from 'jalali-moment';
 
     <div class="form-group  col-sm-6" >
         <label> وضعیت </label>
-        <div class="row" style="padding-right: 30px;padding-top: 15px;">
+        <div class="row" style="padding-right: 10px;">
           <div class="form-check ">
           <label class="custom-control custom-radio">
             <input type="radio" class="custom-control-input" name="active" checked id="inputActive" [(ngModel)]="inputActive">
@@ -68,9 +68,23 @@ import * as moment from 'jalali-moment';
         </div>
         <div class="form-check">
           <label class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="active" id="inputInactive" >
+            <input type="radio" class="custom-control-input" name="active" id="inputInactive1" >
             <span class="custom-control-indicator"></span>
             <span class="custom-control-description">غیرفعال</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="active" id="inputInactive2" >
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">مسدود</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" name="active" id="inputInactive3" >
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">مفقود</span>
           </label>
         </div>
       </div>
@@ -133,11 +147,17 @@ export class ModalComponent {
     card.CardTypeId=this.inputCardTypeId;
     // card.ExpierDate=this.inputExpierDate;
     card.Comment=this.inputComment;
- 
+
     let element = <HTMLInputElement> document.getElementById("inputActive");
     if (element.checked) {card.IsActive=true}
 
-    element = <HTMLInputElement> document.getElementById("inputInactive");
+    element = <HTMLInputElement> document.getElementById("inputInactive1");
+    if (element.checked) {card.IsActive=false}
+
+    element = <HTMLInputElement> document.getElementById("inputInactive2");
+    if (element.checked) {card.IsActive=false}
+
+    element = <HTMLInputElement> document.getElementById("inputInactive3");
     if (element.checked) {card.IsActive=false}
 
     this.service.SaveData(card).subscribe(

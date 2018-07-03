@@ -80,7 +80,8 @@ export class SmartTableComponent {
 
   ngOnInit() {
     this.service.GetData().subscribe(
-      data => this.source.load(data)
+      data => this.source.load(data),
+      error => {window.alert('مشکل در دریافت اطلاعات');  console.log(error);}
     );
 
   }

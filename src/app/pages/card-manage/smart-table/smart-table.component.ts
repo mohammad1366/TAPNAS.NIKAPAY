@@ -88,7 +88,7 @@ export class SmartTableComponent {
 
 
   constructor(private service: cardService, private modalService: NgbModal
-   , private _sanitizer: DomSanitizer ) {
+   , private _sanitizer: DomSanitizer,private toasterService:ToasterService  ) {
   }
 
   public inputTrue: string =  '<div class="custom-control custom-checkbox">'+
@@ -106,15 +106,30 @@ export class SmartTableComponent {
       data => this.source.load(data),
       error => {window.alert('مشکل در دریافت اطلاعات');  console.log(error);}
     );
-
   }
 
   onDeleteConfirm(event): void {
-    if (window.confirm('آیا از خذف خود مطمئن هستید؟')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
+    this.showToast("success",'' , "آیا از حذف مطمئن هستید ؟" +
+    "<div style='clear: both;height: 10px;'></div>" +
+    "<button style='margin-left: 10px; type='button' class=' clear btn btn-info waves-effect waves-light waves-effect waves-light send-data waves-effect waves-light'>" +
+    "بله" +
+    "</button>" +
+    "<button  type='button' class='btn btn-info waves-effect waves-light waves-effect waves-light send-data waves-effect waves-light'>" +
+    "خیر" +
+    "</button>");
+
+    // if (window.confirm('آیا از خذف خود مطمئن هستید؟')) {
+     if(event.data.Id!=null){
+      this.service.DeleteData(event.data.Id).subscribe(
+        card => {
+          this.showToast("success", 'عملیات باموفقیت انجام شد', "");
+        },
+        error => {this.showToast("error", 'مشکل در عملیات', "");  console.log(error);}
+      );
+     }
+    // } else {
+    //   event.confirm.reject();
+    // }
   }
 
   openCreateDialog(event): void {
@@ -125,16 +140,19 @@ export class SmartTableComponent {
 
 
   openEditDialog(event): void {
-    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
+    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout'});
 
+    activeModal.componentInstance.id_table=event.data.Id;
     activeModal.componentInstance.modalHeader = 'کارت';
   }
 
+
   config: ToasterConfig;
 
-  position = 'toast-top-right';
+  position = 'toast-top-center';
   animationType = 'fade';
-  title = 'HI there!';
+  title = '';
+  content = ``;
   timeout = 5000;
   toastsLimit = 5;
   type = 'default';
@@ -142,33 +160,28 @@ export class SmartTableComponent {
   isNewestOnTop = true;
   isHideOnClick = true;
   isDuplicatesPrevented = false;
-  isCloseButton = true;
-
-  types: string[] = ['default', 'info', 'success', 'warning', 'error'];
-  animations: string[] = ['fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'];
-  positions: string[] = ['toast-top-full-width', 'toast-bottom-full-width', 'toast-top-left', 'toast-top-center',
-    'toast-top-right', 'toast-bottom-right', 'toast-bottom-center', 'toast-bottom-left', 'toast-center'];
+  isCloseButton = false;
 
 
-  // private showToast(type: string, title: string, body: string) {
-  //   this.config = new ToasterConfig({
-  //     positionClass: this.position,
-  //     timeout: this.timeout,
-  //     newestOnTop: this.isNewestOnTop,
-  //     tapToDismiss: this.isHideOnClick,
-  //     preventDuplicates: this.isDuplicatesPrevented,
-  //     animation: this.animationType,
-  //     limit: this.toastsLimit,
-  //   });
-  //   const toast: Toast = {
-  //     type: type,
-  //     title: title,
-  //     body: body,
-  //     timeout: this.timeout,
-  //     showCloseButton: this.isCloseButton,
-  //     bodyOutputType: BodyOutputType.TrustedHtml,
-  //   };
-  //   this.toasterService.popAsync(toast);
-  // }
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: this.position,
+      timeout: this.timeout,
+      newestOnTop: this.isNewestOnTop,
+      tapToDismiss: this.isHideOnClick,
+      preventDuplicates: this.isDuplicatesPrevented,
+      animation: this.animationType,
+      limit: this.toastsLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: this.timeout,
+      showCloseButton: this.isCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
+  }
 
 }

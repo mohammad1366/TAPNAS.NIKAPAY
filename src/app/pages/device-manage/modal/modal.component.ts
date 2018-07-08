@@ -124,10 +124,10 @@ export class ModalComponent {
     element = <HTMLInputElement> document.getElementById("inputInactive");
     if (element.checked) {card.IsActive=false}
 
-    this.service.SaveData(card).subscribe(
-      data => {window.alert('عملیات باموفقیت انجام شد');  console.log(data);},
-      error => {window.alert('مشکل در دریافت اطلاعات');  console.log(error);}
-    );
+    // this.service.SaveData(card).subscribe(
+    //   data => {window.alert('عملیات باموفقیت انجام شد');  console.log(data);},
+    //   error => {window.alert('مشکل در دریافت اطلاعات');  console.log(error);}
+    // );
 
     this.activeModal.close();
   }

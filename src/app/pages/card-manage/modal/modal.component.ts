@@ -1,141 +1,59 @@
 import { Card } from './../../../model/card.entity';
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { cardService } from './../../../services/card/card.service';
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
+import { LocalDataSource } from 'ng2-smart-table';
 
 import * as moment from 'jalali-moment';
 
 @Component({
   selector: 'ngx-modal',
-  template: `
-    <div class="modal-header">
-      <span>{{modalHeader}}</span>
-      <button class="close" aria-label="Close" (click)="closeModal()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-
-    <div class="modal-body">
-
-    <div class="row">
-
-      <div class="col-sm-6">
-          <div class="form-group">
-              <label>نوع کارت</label>
-              <select class="form-control" id="inputCardTypeId" [(ngModel)]="inputCardTypeId">
-                  <option *ngFor="let x of types" [value]="x.id" >{{x.name}}</option>
-              </select>
-            </div>
-      </div>
-
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="inputCard16DigitNumber">شماره کارت</label>
-          <input type="text" class="form-control" id="inputCard16DigitNumber" placeholder="شماره کارت" [(ngModel)]="inputCard16DigitNumber">
-        </div>
-      </div>
-
-  </div>
-
-  <div class="row">
-
-    <div class="col-sm-6">
-        <div class="form-group">
-            <label> تاریخ انقضا</label>
-            <div class="form-control">
-              <dp-date-picker
-                dir="rtl"
-                [(ngModel)]="inputExpierDate"
-                mode="day"
-                placeholder="تاریخ انقضا"
-                theme="dp-material"
-                style="width:100%; "
-                id="inputExpierDate">
-              </dp-date-picker>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group  col-sm-6" >
-        <label> وضعیت </label>
-        <div class="row" style="padding-right: 10px;">
-          <div class="form-check ">
-          <label class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="active" checked id="inputActive" [(ngModel)]="inputActive">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">فعال</span>
-          </label>
-        </div>
-        <div class="form-check">
-          <label class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="active" id="inputInactive1" >
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">غیرفعال</span>
-          </label>
-        </div>
-        <div class="form-check">
-          <label class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="active" id="inputInactive2" >
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">مسدود</span>
-          </label>
-        </div>
-        <div class="form-check">
-          <label class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="active" id="inputInactive3" >
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">مفقود</span>
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-
-    <div class="col-sm-6">
-      <div class="form-group">
-        <label for="inputCustomerId">مشتری</label>
-        <input type="text" class="form-control" id="inputCustomerId" placeholder="مشتری" [(ngModel)]="inputCustomerId">
-      </div>
-    </div>
-
-    <div class="col-sm-6">
-      <div class="form-group">
-        <label for="inputComment">توضیحات</label>
-        <input type="text" class="form-control" id="inputComment" placeholder="توضیحات" [(ngModel)]="inputComment">
-      </div>
-    </div>
-
-  </div>
-
-    </div>
-
-    <div class="modal-footer">
-      <button class="btn btn-md btn-success" (click)="saveModal()">ثبت</button>
-      &nbsp;&nbsp;
-      <button class="btn btn-md btn-danger" (click)="closeModal()">بستن</button>
-    </div>
-  `,
+  templateUrl: `./modal.component.html`,
 })
 
 export class ModalComponent {
+  private id_table: number;
 
   inputCardTypeId: number;
   inputCard16DigitNumber: number;
   inputActive: Boolean;
   inputInactive: Boolean;
   inputCustomerId: number;
-  inputComment: string;
+  inputComment: String;
   inputExpierDate = moment();
 
 
   types = [{id:null,name:'انتخاب کنید'},{id:1,name:'آبی'}, {id:2,name:'نقره ای'}, {id:3,name:'طلایی'}, {id:4,name:'پلاتینیوم'}];
 
 
-  constructor(private service: cardService,private activeModal: NgbActiveModal) { }
+  constructor(private service: cardService,private activeModal: NgbActiveModal,private toasterService:ToasterService) { }
 
   modalHeader: string;
+
+  ngOnInit() {
+    if(this.id_table!=null){
+      let card = new Card();
+
+      this.service.GetItem(this.id_table).subscribe(
+        data => {
+          this.inputCard16DigitNumber=data.Card16DigitNumber;
+          this.inputComment=data.Comment;
+          if (data.IsActive)
+          {
+            let element = <HTMLInputElement> document.getElementById("inputActive");
+            element.checked=true
+          }else{
+            let element = <HTMLInputElement> document.getElementById("inputInactive1");
+            element.checked=true;
+          }
+
+        },
+        error => {window.alert('مشکل در دریافت اطلاعات');  console.log(error);}
+      );
+    }
+  }
 
   closeModal() {
     this.activeModal.close();
@@ -160,11 +78,62 @@ export class ModalComponent {
     element = <HTMLInputElement> document.getElementById("inputInactive3");
     if (element.checked) {card.IsActive=false}
 
-    this.service.SaveData(card).subscribe(
-      data => {window.alert('عملیات باموفقیت انجام شد');  console.log(data);},
-      error => {window.alert('مشکل در دریافت اطلاعات');  console.log(error);}
-    );
+    if(this.id_table!=null)
+    {
+      this.service.EditData(card).subscribe(
+        card => {
+          this.showToast("success", 'عملیات باموفقیت انجام شد', "");
+          this.activeModal.close();
+        },
+        error => {this.showToast("error", 'مشکل در عملیات', "");  console.log(error);}
+      );
 
-    this.activeModal.close();
+    }else{
+      this.service.SaveData(card).subscribe(
+        card => {
+          this.showToast("success", 'عملیات باموفقیت انجام شد', "");
+          this.activeModal.close();
+        },
+        error => {this.showToast("error", 'مشکل در عملیات', "");  console.log(error);}
+      );
+
+    }
+  }
+
+  config: ToasterConfig;
+
+  position = 'toast-top-center';
+  animationType = 'fade';
+  title = '';
+  content = ``;
+  timeout = 5000;
+  toastsLimit = 5;
+  type = 'default';
+
+  isNewestOnTop = true;
+  isHideOnClick = true;
+  isDuplicatesPrevented = false;
+  isCloseButton = false;
+
+
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: this.position,
+      timeout: this.timeout,
+      newestOnTop: this.isNewestOnTop,
+      tapToDismiss: this.isHideOnClick,
+      preventDuplicates: this.isDuplicatesPrevented,
+      animation: this.animationType,
+      limit: this.toastsLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: this.timeout,
+      showCloseButton: this.isCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
   }
 }

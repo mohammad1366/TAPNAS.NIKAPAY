@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { cardService } from './../../../services/card/card.service';
+import { transactionService } from './../../../services/trnsaction/transaction.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Component } from '@angular/core';
 
@@ -73,9 +73,7 @@ export class SmartTableComponent {
   source: LocalDataSource = new LocalDataSource();
 
 
-  constructor(private service: cardService) {
-
-
+  constructor(private service: transactionService) {
   }
 
   ngOnInit() {

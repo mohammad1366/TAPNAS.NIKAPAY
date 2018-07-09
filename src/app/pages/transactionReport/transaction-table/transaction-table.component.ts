@@ -3,6 +3,9 @@ import { transactionService } from './../../../services/trnsaction/transaction.s
 import { LocalDataSource } from 'ng2-smart-table';
 import { Component } from '@angular/core';
 
+import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
+import 'style-loader!angular2-toaster/toaster.css';
+
 import * as moment from 'jalali-moment';
 
 @Component({
@@ -73,15 +76,51 @@ export class SmartTableComponent {
   source: LocalDataSource = new LocalDataSource();
 
 
-  constructor(private service: transactionService) {
+  constructor(private service: transactionService, private toasterService:ToasterService) {
   }
 
   ngOnInit() {
     this.service.GetData().subscribe(
       data => this.source.load(data),
-      error => {window.alert('مشکل در دریافت اطلاعات');  console.log(error);}
-    );
+      error => {this.showToast("error", 'مشکل در دریافت اطلاعات', "");  console.log(error);});
+    }
 
+
+  config: ToasterConfig;
+
+  position = 'toast-top-center';
+  animationType = 'fade';
+  title = '';
+  content = ``;
+  timeout = 5000;
+  toastsLimit = 5;
+  type = 'default';
+
+  isNewestOnTop = true;
+  isHideOnClick = true;
+  isDuplicatesPrevented = false;
+  isCloseButton = false;
+
+
+  private showToast(type: string, title: string, body: string) {
+    this.config = new ToasterConfig({
+      positionClass: this.position,
+      timeout: this.timeout,
+      newestOnTop: this.isNewestOnTop,
+      tapToDismiss: this.isHideOnClick,
+      preventDuplicates: this.isDuplicatesPrevented,
+      animation: this.animationType,
+      limit: this.toastsLimit,
+    });
+    const toast: Toast = {
+      type: type,
+      title: title,
+      body: body,
+      timeout: this.timeout,
+      showCloseButton: this.isCloseButton,
+      bodyOutputType: BodyOutputType.TrustedHtml,
+    };
+    this.toasterService.popAsync(toast);
   }
 
 }

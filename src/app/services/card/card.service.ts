@@ -123,7 +123,7 @@ export class cardService {
     var body = {
       "id": id,
     }
-    return this.httpCient.post<Card>("http://2.181.1.55:8085/Api/card/Edit/"+id, body, httpOptions);
+    return this.httpCient.post<Card>("http://2.181.1.55:8085/Api/card/Edit/", body, httpOptions);
   }
 
   private handleError(error: HttpErrorResponse) {

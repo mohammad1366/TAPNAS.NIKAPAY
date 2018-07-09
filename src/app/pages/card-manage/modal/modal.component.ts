@@ -22,7 +22,7 @@ export class ModalComponent {
   inputInactive: Boolean;
   inputCustomerId: number;
   inputComment: String;
-  inputExpierDate = moment();
+  inputExpierDate;
 
 
   types = [{id:null,name:'انتخاب کنید'},{id:1,name:'آبی'}, {id:2,name:'نقره ای'}, {id:3,name:'طلایی'}, {id:4,name:'پلاتینیوم'}];
@@ -38,8 +38,16 @@ export class ModalComponent {
 
       this.service.GetItem(this.id_table).subscribe(
         data => {
+          console.log(data);
           this.inputCard16DigitNumber=data.Card16DigitNumber;
           this.inputComment=data.Comment;
+          this.inputCardTypeId=data.CardTypeId;
+
+          if(data.PersianExpierDate!=null)
+            this.inputExpierDate=moment(data.PersianExpierDate, 'jYYYY/jMM/jDD');
+          else
+            this.inputExpierDate=moment();
+
           if (data.IsActive)
           {
             let element = <HTMLInputElement> document.getElementById("inputActive");
@@ -52,6 +60,8 @@ export class ModalComponent {
         },
         error => {window.alert('مشکل در دریافت اطلاعات');  console.log(error);}
       );
+    }else{
+      this.inputExpierDate=moment();
     }
   }
 

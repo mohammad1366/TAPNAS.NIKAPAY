@@ -88,7 +88,7 @@ export class SmartTableComponent {
 
 
   constructor(private service: cardService, private modalService: NgbModal
-   , private _sanitizer: DomSanitizer,private toasterService:ToasterService  ) {
+   , private _sanitizer: DomSanitizer,private toasterService:ToasterService) {
   }
 
   public inputTrue: string =  '<div class="custom-control custom-checkbox">'+
@@ -109,27 +109,27 @@ export class SmartTableComponent {
   }
 
   onDeleteConfirm(event): void {
-    this.showToast("success",'' , "آیا از حذف مطمئن هستید ؟" +
-    "<div style='clear: both;height: 10px;'></div>" +
-    "<button style='margin-left: 10px; type='button' class=' clear btn btn-info waves-effect waves-light waves-effect waves-light send-data waves-effect waves-light'>" +
-    "بله" +
-    "</button>" +
-    "<button  type='button' class='btn btn-info waves-effect waves-light waves-effect waves-light send-data waves-effect waves-light'>" +
-    "خیر" +
-    "</button>");
+    // this.showToast("success",'' , "آیا از حذف مطمئن هستید ؟" +
+    // "<br> </br>" +
+    // "&nbsp;&nbsp; <div class='btn btn-info waves-effect waves-light' (click)='deleteConfirmDialog($event)' >بله</div>"  +
+    // "&nbsp;&nbsp; <div class='btn btn-info waves-effect waves-light' >خیر</div>" );
 
-    // if (window.confirm('آیا از خذف خود مطمئن هستید؟')) {
+
+    if (window.confirm('آیا از خذف خود مطمئن هستید؟')) {
      if(event.data.Id!=null){
       this.service.DeleteData(event.data.Id).subscribe(
         card => {
-          this.showToast("success", 'عملیات باموفقیت انجام شد', "");
+          if(card)
+          {this.showToast("success", 'عملیات باموفقیت انجام شد', "");}
+          else{this.showToast("error", 'مشکل در حذف', "");}
+          console.log(card);
         },
         error => {this.showToast("error", 'مشکل در عملیات', "");  console.log(error);}
       );
      }
-    // } else {
-    //   event.confirm.reject();
-    // }
+    } else {
+       event.confirm.reject();
+    }
   }
 
   openCreateDialog(event): void {
@@ -146,6 +146,9 @@ export class SmartTableComponent {
     activeModal.componentInstance.modalHeader = 'کارت';
   }
 
+  deleteConfirmDialog(event):void{
+    console.log("del");
+  }
 
   config: ToasterConfig;
 

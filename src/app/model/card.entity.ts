@@ -7,7 +7,7 @@ export class Card {
   public Cvv2: number;
   public Pin: number;
   public Pin2: number;
-  public ExpierDate: Date; 
+  public ExpierDate: Date;
   public IsActive: Boolean;
   public LastBalance: number;
   public Comment: String;
@@ -16,7 +16,7 @@ export class Card {
   public LastModifierId: number;
   public LastModifiedDate: Date;
   public CardTypeTitle: String;
-  public PersianExpierDate: String;
+  public PersianExpierDate: string;
   public PersianCreateOn: String;
   public LastBalanceTitle: String;
 }

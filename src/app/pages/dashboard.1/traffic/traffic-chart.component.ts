@@ -4,7 +4,7 @@ import { NbThemeService } from '@nebular/theme';
 
 declare const echarts: any;
 
-const points = [3000, 5200, 4350, 5300, 7300, 6200, 6600, 8600];
+const points = [300, 520, 435, 530, 730, 620, 660, 860];
 
 @Component({
   selector: 'ngx-traffic-chart',
@@ -15,8 +15,8 @@ const points = [3000, 5200, 4350, 5300, 7300, 6200, 6600, 8600];
 })
 export class TrafficChartComponent implements AfterViewInit, OnDestroy {
 
-  type = 'ماه';
-  types = ['هفته', 'ماه', 'سال'];
+  type = 'month';
+  types = ['week', 'month', 'year'];
   option: any = {};
   themeSubscription: any;
 
@@ -73,7 +73,7 @@ export class TrafficChartComponent implements AfterViewInit, OnDestroy {
           backgroundColor: trafficTheme.tooltipBg,
           borderColor: trafficTheme.tooltipBorderColor,
           borderWidth: 3,
-          formatter: '{c0} تومان',
+          formatter: '{c0} MB',
           extraCssText: trafficTheme.tooltipExtraCss,
         },
         series: [

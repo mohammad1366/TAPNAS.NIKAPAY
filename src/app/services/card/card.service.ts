@@ -119,11 +119,12 @@ export class cardService {
     return this.httpCient.post<Card>("http://2.181.1.55:8085/Api/card/Edit", body, httpOptions);
   }
 
-  DeleteData(id:number): Observable<Card> {
-    var body = {
-      "id": id,
-    }
-    return this.httpCient.post<Card>("http://2.181.1.55:8085/Api/card/Edit/", body, httpOptions);
+  DeleteData(id) {
+    // var body = {
+    //   "id": id,
+    // }
+    // return this.httpCient.post<Card>("http://2.181.1.55:8085/Api/card/Edit/", body, httpOptions);
+    return this.httpCient.get<Card>("http://2.181.1.55:8085/Api/card/Delete/"+id);
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -1,7 +1,7 @@
-import { Card } from './../../../model/card.entity';
+import { Card } from '../../../model/card.entity';
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { cardService } from './../../../services/card/card.service';
+import { cardService } from '../../../services/card/card.service';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
 import 'style-loader!angular2-toaster/toaster.css';
 import { LocalDataSource } from 'ng2-smart-table';

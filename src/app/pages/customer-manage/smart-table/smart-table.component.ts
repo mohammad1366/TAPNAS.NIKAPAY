@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs';
-import { cardService } from './../../../services/card/card.service';
+import { cardService } from '../../../services/card/card.service';
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ModalComponent } from './../modal/modal.component';
+import { ModalComponent } from '../modal/modal.component';
 
 import { DomSanitizer } from '@angular/platform-browser';
 

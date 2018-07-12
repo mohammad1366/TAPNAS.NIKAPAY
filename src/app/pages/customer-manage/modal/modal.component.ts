@@ -1,7 +1,7 @@
-import { Card } from './../../../model/card.entity';
+import { Card } from '../../../model/card.entity';
 import { Component, OnInit, } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { cardService } from './../../../services/card/card.service';
+import { cardService } from '../../../services/card/card.service';
 
 import * as moment from 'jalali-moment';
 

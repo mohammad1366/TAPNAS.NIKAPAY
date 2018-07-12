@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { transactionService } from './../../../services/trnsaction/transaction.service';
+import { transactionService } from '../../../services/trnsaction/transaction.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Component } from '@angular/core';
 

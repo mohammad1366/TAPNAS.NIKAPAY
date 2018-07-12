@@ -1,4 +1,4 @@
-import { Card } from './../../model/card.entity';
+import { Card } from '../../model/card.entity';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/catch';

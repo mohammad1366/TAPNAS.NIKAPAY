@@ -20,7 +20,12 @@ import { SolarComponent } from './solar/solar.component';
 import { PlayerComponent } from './rooms/player/player.component';
 import { TrafficComponent } from './traffic/traffic.component';
 import { TrafficChartComponent } from './traffic/traffic-chart.component';
-
+import { BuyComponent } from './buy/buy.component';
+import { BuyChartComponent } from './buy/buy-chart.component';
+import { RemainingComponent } from './remaining/remaining.component';
+import { RemainingChartComponent } from './remaining/remaining-chart.component';
+import { ChargeComponent } from './charge/charge.component';
+import { ChargeChartComponent } from './charge/charge-chart.component';
 
 @NgModule({
   imports: [
@@ -45,6 +50,12 @@ import { TrafficChartComponent } from './traffic/traffic-chart.component';
     SolarComponent,
     TrafficComponent,
     TrafficChartComponent,
+    BuyComponent,
+    BuyChartComponent,
+    RemainingComponent,
+    RemainingChartComponent,
+    ChargeComponent,
+    ChargeChartComponent,
   ],
 })
 export class DashboardModule { }

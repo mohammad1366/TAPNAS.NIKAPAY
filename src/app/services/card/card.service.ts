@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
-import { Card } from './../../model/card.entity';
+import { Card } from '../../model/card.entity';
 
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';

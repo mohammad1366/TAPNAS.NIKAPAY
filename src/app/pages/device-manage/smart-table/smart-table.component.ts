@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs';
-import { deviceService } from './../../../services/device/device.service';
+import { deviceService } from '../../../services/device/device.service';
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ModalComponent } from './../modal/modal.component';
+import { ModalComponent } from '../modal/modal.component';
 
 import { DomSanitizer } from '@angular/platform-browser';
 
